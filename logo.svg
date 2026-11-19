@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="WideWorld Infotech">
+  <defs>
+    <linearGradient id="gold" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f8e7b0"/>
+      <stop offset="0.48" stop-color="#e0c36a"/>
+      <stop offset="1" stop-color="#a8842f"/>
+    </linearGradient>
+  </defs>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="15" fill="#1a1a1a" stroke="#e0c36a" stroke-width="1.5"/>
+  <path d="M14 22c6-9 30-9 36 0" fill="none" stroke="url(#gold)" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M15 24.5 24.2 46 32 31.5 39.8 46 49 24.5" fill="none" stroke="url(#gold)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="32" cy="16.5" r="2.1" fill="#f6e2a4"/>
+</svg>
