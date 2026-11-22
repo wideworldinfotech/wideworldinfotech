@@ -181,19 +181,48 @@
       const company = String(data.get("company") || "").trim();
       const service = String(data.get("service") || "").trim();
       const message = String(data.get("message") || "").trim();
-      const body = [
-        "Name: " + name,
-        "Email: " + email,
-        "Company: " + (company || "—"),
-        "Service: " + service,
-        "",
-        message
-      ].join("\n");
-      const href = "mailto:info@wideworldinfotech.com?subject=" +
-        encodeURIComponent("Project enquiry from " + name) +
-        "&body=" + encodeURIComponent(body);
-      if (note) note.textContent = "Your email app should open with this note. If it does not, write to info@wideworldinfotech.com.";
-      window.location.href = href;
+      const button = form.querySelector("button[type='submit']");
+      if (button) button.disabled = true;
+      if (note) note.textContent = "Sending your details…";
+
+      fetch("https://formsubmit.co/ajax/info@wideworldinfotech.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({
+          Name: name,
+          Email: email,
+          Company: company || "Not provided",
+          Service: service,
+          Message: message,
+          _subject: "New project enquiry from " + name,
+          _template: "table",
+          _captcha: "false",
+          _replyto: email
+        })
+      }).then(function (response) {
+        return response.json().then(function (payload) {
+          return { ok: response.ok, payload: payload };
+        });
+      }).then(function (result) {
+        const payload = result.payload || {};
+        const sent = result.ok && String(payload.success) === "true";
+        const reply = payload.message || "";
+        if (sent) {
+          form.reset();
+          if (note) note.textContent = "Sent. Name, email, company, service, and message are on the way to info@wideworldinfotech.com.";
+        } else if (/activation/i.test(reply)) {
+          if (note) note.textContent = "One confirmation email was sent to info@wideworldinfotech.com. Open it and press Activate Form. After that, every Send arrives in that inbox.";
+        } else {
+          if (note) note.textContent = "We could not send the form. Please email info@wideworldinfotech.com.";
+        }
+      }).catch(function () {
+        if (note) note.textContent = "We could not send the form. Please email info@wideworldinfotech.com.";
+      }).finally(function () {
+        if (button) button.disabled = false;
+      });
     });
   }
 })();
